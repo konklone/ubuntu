@@ -69,7 +69,7 @@ pyenv virtualenvwrapper
 
 Recommended versions of Python to install: the latest 2.7, and the latest 3.X.
 
-For example, install 3.4.0 with `pyenv install 3.4.0`. Use `pyenv global 3.4.0` to set your global default version of Python. Use `pyenv local 3.4.0` to drop a `.python-version` file in the current directory, that instructs pyenv to switch to that version upon entering the directory.
+For example, install 3.4.1 with `pyenv install 3.4.1`. Use `pyenv global 3.4.1` to set your global default version of Python. Use `pyenv local 3.4.1` to drop a `.python-version` file in the current directory, that instructs pyenv to switch to that version upon entering the directory.
 
 To update pyenv and pyenv-virtualenvwrapper (for example, when a new version of Python is released), just `cd` into each of their directories and do a `git pull`.
 
