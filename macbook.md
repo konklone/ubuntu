@@ -80,7 +80,9 @@ Select the USB icon to enter into the Ubuntu GRUB selector. Pick **"Try Ubuntu w
 
 ### Installing (from fake Ubuntu)
 
-Once inside the flash-booted Ubuntu, you will need to install wireless drivers from the network. This means you will need a **wired connection**. This could be Ethernet (using an adapter), or it could be over USB tethering (many Android phones, such as the Nexus 5, support this out-of-the-box).
+Once inside the flash-booted Ubuntu, you may notice that the screen is not well-scaled for the high-density screen. You can fix that if you want by [following the instructions below](#high-density-screen), but you'll have to do it again after install anyway.
+
+You will need to install wireless drivers from the network. This means you will need a **wired connection**. This could be Ethernet (using an adapter), or it could be over USB tethering (many Android phones, such as the Nexus 5, support this out-of-the-box).
 
 Install drivers with:
 
@@ -98,13 +100,15 @@ During installation, select the option to wipe the entire drive, even unused blo
 
 ### Post-installation fixes (from real Ubuntu)
 
-You still need to do a couple things, from your real Ubuntu install.
+#### Fix the wireless
 
-First, you'll need to install those wireless drivers again:
+Install those wireless drivers again:
 
 ```bash
 sudo apt-get install bcmwl-kernel-source
 ```
+
+#### GRUB maintenance
 
 The second GRUB change fixes a reported occasional SSD freeze bug. (I've never seen it, but I'm following orders out of an abundance of caution.)
 
@@ -124,23 +128,9 @@ Finally, save and update GRUB to make those two changes take effect:
 sudo update-grub
 ```
 
-### Dealing with the Retina display
+#### High density display
 
-You'll notice that the retina display makes everything tiny. Let's fix that.
-
-Ubuntu has plans to better support high DPI monitors in future releases, but for now we'll need to work around it.
-
-Increase the system font size:
-
-```bash
-gsettings set org.gnome.desktop.interface text-scaling-factor 1.5
-```
-
-Increase Firefox's pixel scaling. Visit `about:config`, and search for `"css"`. Find `layout.css.devPixelsPerPx` and change the value from `-1.0` (system default) to `2.0`.
-
-Chrome should automatically scale to handle high density screens. For me, it took effect after I opened Chrome, logged into my Google account, synced my data, and then rebooted the browser. However, this shouldn't be necessary, and if you have any issues getting this to work, please [open an issue](https://github.com/konklone/ubuntu/issues).
-
-Some things are still tiny, like the system tray. Such is life in Ubuntu on Macs, for the time being.
+You'll notice that the retina display makes everything tiny. Fix this by going to your `System Settings`, then to `Displays`. Change the "Scale for menu and title bars" from `1` to `1.75`.
 
 ### Switching Alt and Cmd
 
