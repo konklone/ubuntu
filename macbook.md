@@ -80,7 +80,7 @@ Select the USB icon to enter into the Ubuntu GRUB selector. Pick **"Try Ubuntu w
 
 ### Installing (from fake Ubuntu)
 
-Once inside the flash-booted Ubuntu, you may notice that the screen is not well-scaled for the high-density screen. You can fix that if you want by [following the instructions below](#high-density-screen), but you'll have to do it again after install anyway.
+Once inside the flash-booted Ubuntu, you may notice that the screen is not well-scaled for the high-density screen. You can fix that if you want by [following the instructions below](#high-density-display), but you'll have to do it again after install anyway.
 
 You will need to install wireless drivers from the network. This means you will need a **wired connection**. This could be Ethernet (using an adapter), or it could be over USB tethering (many Android phones, such as the Nexus 5, support this out-of-the-box).
 
