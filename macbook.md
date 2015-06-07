@@ -1,4 +1,6 @@
-## Installing Ubuntu 14.04 on a MacBook Pro (11,1)
+## Installing Ubuntu 15.04 on a MacBook Pro (11,1)
+
+This tutorial will create a **fully disk encrypted** Macbook running **only Ubuntu 15.04**. This will **completely remove your OS X partition**.
 
 Your model version should be `MacBookPro 11,1`. You can verify this from OS X by following [Apple's steps here](http://support.apple.com/kb/ht4132), or by running `sudo dmidecode -s system-product-name` from Ubuntu.
 
@@ -8,31 +10,27 @@ You will need:
 * Some sort of **wired connection**, at least briefly, to install wireless drivers. This can be Ethernet (through an Ethernet-to-USB adapter), or it could be USB tethering from a device connected to a mobile network.
 * **These instructions**, either printed on paper (!), or visible from your phone or another laptop.
 
-### Getting started (from OS X)
+You can create the Ubuntu boot USB stick [from OS X](#starting-from-os-x), or you can do it [from Ubuntu](#starting-from-ubuntu).
 
-Prepare your hard drive by resizing the main OS X partition:
+### Starting from OS X
 
-* Open up Disk Utility, click on the `____`, then click on the `Partition` tab.
-* Drag the corner of the partition box to shrink the partition from 500GB to a size of your choice. Recommended: 100GB (leaving 400GB for Ubuntu).
-* Click Resize `[...fill in with some more OS X instructions...]`
-
-From the [Ubuntu Desktop download page](http://www.ubuntu.com/download/desktop/), download 14.04 LTS **64-bit**. Download the *normal* 64-bit ISO. Do **NOT** download the "64-bit Mac (AMD)" version.
+From the [Ubuntu Desktop download page](http://www.ubuntu.com/download/desktop/), download 15.04 LTS **64-bit**. Download the *normal* 64-bit ISO. Do **NOT** download the "64-bit Mac (AMD)" version.
 
 Now we'll convert the `.iso` to the kind of `.img` file that Macs need to boot from.
 
 `cd` to the directory where the `.iso` file lives, then run:
 
 ```bash
-hdiutil convert -format UDRW -o ubuntu-14.04-desktop-amd64.img ubuntu-14.04-desktop-amd64.iso
+hdiutil convert -format UDRW -o ubuntu-15.04-desktop-amd64.img ubuntu-14.04-desktop-amd64.iso
 ```
 
 OS X will actually output a `.img` with a `.dmg` extension added, so remove it:
 
 ```bash
-mv ubuntu-14.04-desktop-amd64.img.dmg ubuntu-14.04-desktop-amd64.img
+mv ubuntu-15.04-desktop-amd64.img.dmg ubuntu-15.04-desktop-amd64.img
 ```
 
-Insert the flash drive. Then find the identifier of the flash drive (e.g. `/dev/disk2`, by running:
+Insert the flash drive. Then find the identifier of the flash drive (e.g. `/dev/disk2`), by running:
 
 ```bash
 diskutil list
@@ -47,7 +45,7 @@ diskutil unmountDisk /dev/diskN
 Then flash the `.img` to the drive. Use your disk identifier from above, but note the extra `r` that gets put in the middle.
 
 ```bash
-sudo dd if=ubuntu-14.04-desktop-amd64.img of=/dev/rdiskN bs=1m
+sudo dd if=ubuntu-15.04-desktop-amd64.img of=/dev/rdiskN bs=1m
 ```
 
 Eject the drive:
@@ -58,7 +56,17 @@ diskutil eject /dev/diskN
 
 Then actually remove the drive.
 
-**Note:** If you plan to use the `GSA-Guest` WiFi during the Ubuntu installation process, you may wish to sign in to the network from OS X before rebooting.
+### Starting from Ubuntu
+
+From the [Ubuntu Desktop download page](http://www.ubuntu.com/download/desktop/), download 15.04 LTS **64-bit**. Download the *normal* 64-bit ISO. Do **NOT** download the "64-bit Mac (AMD)" version.
+
+Figure out the correct device identifier for the USB drive. It may be `/dev/sdc`, or `/dev/sdd`, etc. If you already run Ubuntu, I'm trusting you to figure out how to identify the USB stick's identifier.
+
+Create a USB stick by running the following command, replacing `/dev/sdX` with the device identifier you found:
+
+```bash
+sudo dd if=ubuntu-15.04-desktop-amd64.img of=/dev/sdX
+```
 
 ### Booting Ubuntu from USB
 
@@ -72,7 +80,9 @@ Select the USB icon to enter into the Ubuntu GRUB selector. Pick **"Try Ubuntu w
 
 ### Installing (from fake Ubuntu)
 
-Once inside the flash-booted Ubuntu, you will need to install wireless drivers from the network. This means you will need a **wired connection**. This could be Ethernet (using an adapter), or it could be over USB tethering (many Android phones, such as the [Nexus 5](https://play.google.com/store/devices/details?id=nexus_5_white_16gb) support this out-of-the-box).
+Once inside the flash-booted Ubuntu, you may notice that the screen is not well-scaled for the high-density screen. You can fix that if you want by [following the instructions below](#high-density-display), but you'll have to do it again after install anyway.
+
+You will need to install wireless drivers from the network. This means you will need a **wired connection**. This could be Ethernet (using an adapter), or it could be over USB tethering (many Android phones, such as the Nexus 5, support this out-of-the-box).
 
 Install drivers with:
 
@@ -82,52 +92,23 @@ sudo apt-get install bcmwl-kernel-source
 
 The wireless should start working right away. If tethering, you may wish to disconnect the tethered device.
 
-Start the installer from the "Install Ubuntu" desktop launcher. When asked how to install Ubuntu on the hard drive, select "Alongside Mac OS X".
+Start the installer from the "Install Ubuntu" desktop launcher. When asked how to install Ubuntu on the hard drive, elect to erase all operating systems and install Ubuntu 15.04.
 
-Everything should install as normal. But when the install is done, choose "Keep Using Ubuntu". **Do not restart yet.**
+When installing Ubuntu, pick the option to encrypt your hard drive during install. This will auto-select an option about LVM as well, which is fine.
 
-You now have to fix the EFI boot order, so that Ubuntu is both available and the default.
-
-Install the `efibootmgr` and run it:
-
-```bash
-sudo apt-get install efibootmgr
-sudo efibootmgr
-```
-
-Ubuntu should be listed as `Boot0000`, and OS X as `Boot0080`. The `BootOrder` is likely set to `0080`, which means as it stands, it will boot directly to OS X.
-
-Set the boot order to allow either one, and to default to Ubuntu, with:
-
-```bash
-sudo efibootmgr -o 0,80
-```
-
-Now you can safely reboot. Reboot back into Ubuntu -- you won't be able to boot back into OS X yet, which is something we'll fix from your real Ubuntu install.
+During installation, select the option to wipe the entire drive, even unused blocks -- even though the installer says this may make installation take much longer. It won't take that long.
 
 ### Post-installation fixes (from real Ubuntu)
 
-You still need to do a couple things, from your real Ubuntu install.
+#### Fix the wireless
 
-First, you'll need to install those wireless drivers again:
+Install those wireless drivers again:
 
 ```bash
 sudo apt-get install bcmwl-kernel-source
 ```
 
-Then we need to make two GRUB changes. The first adds a custom "MacOS" entry to the GRUB bootloader, which will let you properly boot into OS X:
-
-```bash
-sudo nano /etc/grub.d/40_custom
-```
-
-Add this to the end of the file (it exits GRUB, so that Mac's native bootloader picks up where it left off):
-
-```
-menuentry "MacOS" {
-  exit
-}
-```
+#### GRUB maintenance
 
 The second GRUB change fixes a reported occasional SSD freeze bug. (I've never seen it, but I'm following orders out of an abundance of caution.)
 
@@ -147,27 +128,57 @@ Finally, save and update GRUB to make those two changes take effect:
 sudo update-grub
 ```
 
-### Dealing with the Retina display
+#### High density display
 
-You'll notice that the retina display makes everything tiny. Let's fix that.
+You'll notice that the retina display makes everything tiny. Fix this by going to your `System Settings`, then to `Displays`. Change the "Scale for menu and title bars" from `1` to `1.75`.
 
-Ubuntu has plans to better support high DPI monitors in future releases, but for now we'll need to work around it.
+![scaling display](images/scale.png)
 
-Increase the system font size:
+#### Adjusting the trackpad
 
-```bash
-gsettings set org.gnome.desktop.interface text-scaling-factor 1.5
+To make the trackpad a little smoother and more like OS X (and less likely to pick up on palms and thumbs), switch out the `synaptics` driver for the `mtrack` driver and put in a profile that should be pretty close to OS X.
+
+Swap out the driver:
+
+```
+gsettings set org.gnome.settings-daemon.plugins.mouse active false
+sudo apt-get install xserver-xorg-input-mtrack
+sudo apt-get autoremove xserver-xorg-input-synaptics
 ```
 
-Increase Firefox's pixel scaling. Visit `about:config`, and search for `"css"`. Find `layout.css.devPixelsPerPx` and change the value from `-1.0` (system default) to `2.0`.
+Then edit `/usr/share/X11/xorg.conf.d/50-mtrack.conf` and replace its contents with this:
 
-Increase Chrome's default zoom. From the [Settings page](chrome://settings), click "Show advanced settings..." and scroll down to "Web content", then set the "Page zoom" to `175%`.
+```
+Section "InputClass"
+ MatchIsTouchpad "on"
+ Identifier "Touchpads"
+ Driver "mtrack"
+ Option "IgnoreThumb" "true"
+ Option "ThumbSize" "50"
+ Option "IgnorePalm" "true"
+ Option "DisableOnPalm" "false"
+ Option "BottomEdge" "30"
+ Option "TapDragEnable" "true"
+ Option "Sensitivity" "0.5"
+ Option "FingerHigh" "3"
+ Option "FingerLow" "2"
+ Option "ButtonEnable" "true"
+ Option "ButtonIntegrated" "true"
+ Option "ButtonTouchExpire" "750"
+ Option "ClickFinger1" "1"
+ Option "ClickFinger2" "3"
+ Option "TapButton1" "1"
+ Option "TapButton2" "3"
+ Option "TapButton3" "2"
+ Option "TapButton4" "0"
+ Option "TapDragWait" "100"
+ Option "ScrollLeftButton" "7"
+ Option "ScrollRightButton" "6"
+ Option "ScrollDistance" "100"
+EndSection
+```
 
-(Better support for HiDPI screens in Chrome on Linux [is coming](https://code.google.com/p/chromium/issues/detail?id=143619), but it depends on a Gtk+ replacement called Aura, which is currently [live in the Chrome dev channel](https://groups.google.com/a/chromium.org/forum/#!topic/chromium-dev/Zpu9801pPRc).)
-
-Some things are still tiny, like the system tray. Such is life in Ubuntu on Macs, for the time being.
-
-### Switching Alt and Cmd
+#### Switching Alt and Cmd
 
 If you're like me, you want the left-hand modifiers to go `Ctrl`/`Super`/`Alt`, and not `Ctrl`/`Alt`/`Super`, the way Mac keyboards default to.
 
@@ -229,5 +240,6 @@ I used these while figuring all this out:
 
 * [Ubuntu official instructions for creating a bootable USB stick](http://www.ubuntu.com/download/desktop/create-a-usb-stick-on-mac-osx)
 * [Ubuntu wiki instructions for 13.10/14.04 on MacBook Pro 11,1](https://help.ubuntu.com/community/MacBookPro11-1/Saucy)
+* [Ubuntu wiki instructions for 14.10 on Macbook Pro 11,1](https://help.ubuntu.com/community/MacBookPro11-1/utopic)
 * [Remapping your keyboard](http://www.chrisamiller.com/blog/posts/remapping-your-macbooks-keyboard-in-ubuntu-1204)
-* [Running commands on startup](http://askubuntu.com/a/463280)
+* [Running commands on startup](https://askubuntu.com/a/463280)
