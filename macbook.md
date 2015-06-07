@@ -132,7 +132,51 @@ sudo update-grub
 
 You'll notice that the retina display makes everything tiny. Fix this by going to your `System Settings`, then to `Displays`. Change the "Scale for menu and title bars" from `1` to `1.75`.
 
-### Switching Alt and Cmd
+#### Adjusting the trackpad
+
+To make the trackpad a little smoother and more like OS X (and less likely to pick up on palms and thumbs), switch out the `synaptics` driver for the `mtrack` driver and put in a profile that should be pretty close to OS X.
+
+Swap out the driver:
+
+```
+gsettings set org.gnome.settings-daemon.plugins.mouse active false
+sudo apt-get install xserver-xorg-input-mtrack
+sudo apt-get autoremove xserver-xorg-input-synaptics
+```
+
+Then edit `/usr/share/X11/xorg.conf.d/50-mtrack.conf` and replace its contents with this:
+
+```
+Section "InputClass"
+ MatchIsTouchpad "on"
+ Identifier "Touchpads"
+ Driver "mtrack"
+ Option "IgnoreThumb" "true"
+ Option "ThumbSize" "50"
+ Option "IgnorePalm" "true"
+ Option "DisableOnPalm" "false"
+ Option "BottomEdge" "30"
+ Option "TapDragEnable" "true"
+ Option "Sensitivity" "0.6"
+ Option "FingerHigh" "3"
+ Option "FingerLow" "2"
+ Option "ButtonEnable" "true"
+ Option "ButtonIntegrated" "true"
+ Option "ButtonTouchExpire" "750"
+ Option "ClickFinger1" "1"
+ Option "ClickFinger2" "3"
+ Option "TapButton1" "1"
+ Option "TapButton2" "3"
+ Option "TapButton3" "2"
+ Option "TapButton4" "0"
+ Option "TapDragWait" "100"
+ Option "ScrollLeftButton" "7"
+ Option "ScrollRightButton" "6"
+ Option "ScrollDistance" "100"
+EndSection
+```
+
+#### Switching Alt and Cmd
 
 If you're like me, you want the left-hand modifiers to go `Ctrl`/`Super`/`Alt`, and not `Ctrl`/`Alt`/`Super`, the way Mac keyboards default to.
 
