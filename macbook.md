@@ -45,7 +45,7 @@ diskutil unmountDisk /dev/diskN
 Then flash the `.img` to the drive. Use your disk identifier from above, but note the extra `r` that gets put in the middle.
 
 ```bash
-sudo dd if=ubuntu-15.04-desktop-amd64.img of=/dev/rdiskN bs=1m
+sudo dd if=ubuntu-15.04-desktop-amd64.iso of=/dev/rdiskN bs=1m
 ```
 
 Eject the drive:
