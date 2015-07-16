@@ -7,7 +7,7 @@ Your model version should be `MacBookPro 11,1`. You can verify this from OS X by
 You will need:
 
 * A **USB flash drive** with at least 2GB of storage.
-* Some sort of **wired connection**, at least briefly, to install wireless drivers. This can be Ethernet (through an Ethernet-to-USB adapter), or it could be USB tethering from a device connected to a mobile network.
+* Some sort of **wired connection**, at least briefly, to inspotall wireless drivers. This can be Ethernet (through an Ethernet-to-USB adapter), or it could be USB tethering from a device connected to a mobile network.
 * **These instructions**, either printed on paper (!), or visible from your phone or another laptop.
 
 You can create the Ubuntu boot USB stick [from OS X](#starting-from-os-x), or you can do it [from Ubuntu](#starting-from-ubuntu).
@@ -76,7 +76,7 @@ You should see two hard-drive-like icons on the left, which are OS X and the OS 
 
 If you see 2 USB icons, it shouldn't matter which one you pick. But if you want more peace of mind, you can unplug and replug in the USB drive, and only 1 should reappear.
 
-Select the USB icon to enter into the Ubuntu GRUB selector. Pick **"Try Ubuntu without installing"**. Do *not* pick "Install Ubuntu" -- you will want to run some commands after installation but prior to rebooting.
+Select the USB icon to enter into the Ubuntu GRUB selector. Pick **"Try Ubuntu without installing"**.
 
 ### Installing (from fake Ubuntu)
 
