@@ -45,7 +45,7 @@ diskutil unmountDisk /dev/diskN
 Then flash the `.img` to the drive. Use your disk identifier from above, but note the extra `r` that gets put in the middle.
 
 ```bash
-sudo dd if=ubuntu-15.04-desktop-amd64.iso of=/dev/rdiskN bs=1m
+sudo dd if=ubuntu-15.04-desktop-amd64.img of=/dev/rdiskN bs=1m
 ```
 
 Eject the drive:
@@ -65,7 +65,7 @@ Figure out the correct device identifier for the USB drive. It may be `/dev/sdc`
 Create a USB stick by running the following command, replacing `/dev/sdX` with the device identifier you found:
 
 ```bash
-sudo dd if=ubuntu-15.04-desktop-amd64.img of=/dev/sdX
+sudo dd if=ubuntu-15.04-desktop-amd64.iso of=/dev/sdX
 ```
 
 ### Booting Ubuntu from USB
