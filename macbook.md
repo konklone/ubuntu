@@ -134,6 +134,10 @@ You'll notice that the retina display makes everything tiny. Fix this by going t
 
 ![scaling display](images/scale.png)
 
+##### Firefox
+
+You'll still need to go to `about:config` in Firefox and change the `layout.css.devPixelsPerPx` value to `1.75`.
+
 #### Adjusting the trackpad
 
 To make the trackpad a little smoother and more like OS X (and less likely to pick up on palms and thumbs), switch out the `synaptics` driver for the `mtrack` driver and put in a profile that should be pretty close to OS X.
