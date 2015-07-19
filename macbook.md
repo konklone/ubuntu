@@ -110,7 +110,7 @@ sudo apt-get install bcmwl-kernel-source
 
 #### GRUB maintenance
 
-The second GRUB change fixes a reported occasional SSD freeze bug. (I've never seen it, but I'm following orders out of an abundance of caution.)
+This GRUB change fixes a reported occasional SSD freeze bug. (I've never seen it, but I'm following orders out of an abundance of caution.)
 
 ```bash
 sudo nano /etc/default/grub
