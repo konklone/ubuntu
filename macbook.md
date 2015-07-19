@@ -238,6 +238,10 @@ options hid-apple fnmode=2
 
 The next time you boot up, the behavior will be flipped, and you will need to hold down Fn to turn brightness up and down.
 
+### Other Ubuntu things to do
+
+* [Enable recognition of your U2F FIDO key](https://konklone.com/post/get-a-fido-key-right-now-and-log-into-stuff-with-it#getting-it-working-on-linux).
+
 ### Reference resources
 
 I used these while figuring all this out:
