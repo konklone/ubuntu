@@ -2,6 +2,8 @@
 
 This tutorial will create a **fully disk encrypted** Macbook running **only Ubuntu 15.04**. This will **completely remove your OS X partition**.
 
+To install _Debian_ on a Macbook Pro, check out [Jessie Frazelle's tutorial](https://blog.jessfraz.com/post/linux-on-mac/).
+
 Your model version should be `MacBookPro 11,1`. You can verify this from OS X by following [Apple's steps here](http://support.apple.com/kb/ht4132), or by running `sudo dmidecode -s system-product-name` from Ubuntu.
 
 You will need:
