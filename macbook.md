@@ -9,6 +9,7 @@ Your model version should be `MacBookPro 11,1`. You can verify this from OS X by
 You will need:
 
 * A **USB flash drive** with at least 2GB of storage.
+* Some way to download/transfer WiFi drivers after installation. The easiest way is to use a tethered network connection over USB.
 
 You can create the Ubuntu boot USB stick [from OS X](#starting-from-os-x), or you can do it [from Ubuntu](#starting-from-ubuntu).
 
@@ -100,10 +101,24 @@ During installation, select the option to wipe the entire drive, even unused blo
 
 #### Fix the wireless
 
-Install those wireless drivers again:
+The wireless drivers ship with the boot image, but aren't _installed_ by the boot image, so you need to either get a USB network connection to your laptop to install them, or you need to manually download and install 2 `.deb` files to proceed.
+
+If you have a USB tethered network connection, use it and install those wireless drivers again:
 
 ```bash
 sudo apt-get install bcmwl-kernel-source
+```
+
+If you don't have a tethered network connection, download these two files from some other computer:
+
+* [`dkms` for Ubuntu 15.10](http://packages.ubuntu.com/wily/all/dkms/download)
+* [`bcmwl-kernel-source` for Ubuntu 15.10](http://packages.ubuntu.com/wily/amd64/bcmwl-kernel-source/download)
+
+Transfer the two `.deb` files via USB to your Macbook, then install them with `dpkg`:
+
+```
+sudo dpkg -i dkms_2.2.0.3-2ubuntu6_all.deb
+sudo dpkg -i bcmwl-kernel-source_6.30.223.248+bdcom-0ubuntu7_amd64.deb
 ```
 
 #### GRUB maintenance
