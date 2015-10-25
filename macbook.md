@@ -249,6 +249,12 @@ Whose body is the following one line:
 options hid-apple fnmode=2
 ```
 
+Then update the boot image:
+
+```
+sudo update-initramfs -u -k all
+```
+
 The next time you boot up, the behavior will be flipped, and you will need to hold down Fn to turn brightness up and down.
 
 ### Other Ubuntu things to do
