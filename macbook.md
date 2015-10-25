@@ -1,6 +1,6 @@
-## Installing Ubuntu 15.04 on a MacBook Pro (11,1)
+## Installing Ubuntu 15.10 on a MacBook Pro (11,1)
 
-This tutorial will create a **fully disk encrypted** Macbook running **only Ubuntu 15.04**. This will **completely remove your OS X partition**.
+This tutorial will create a **fully disk encrypted** Macbook running **only Ubuntu**. This will **completely remove your OS X partition**.
 
 To install _Debian_ on a Macbook Pro, check out [Jessie Frazelle's tutorial](https://blog.jessfraz.com/post/linux-on-mac/).
 
@@ -9,27 +9,26 @@ Your model version should be `MacBookPro 11,1`. You can verify this from OS X by
 You will need:
 
 * A **USB flash drive** with at least 2GB of storage.
-* Some sort of **wired connection**, at least briefly, to inspotall wireless drivers. This can be Ethernet (through an Ethernet-to-USB adapter), or it could be USB tethering from a device connected to a mobile network.
-* **These instructions**, either printed on paper (!), or visible from your phone or another laptop.
+* Some way to download/transfer WiFi drivers after installation. The easiest way is to use a tethered network connection over USB.
 
 You can create the Ubuntu boot USB stick [from OS X](#starting-from-os-x), or you can do it [from Ubuntu](#starting-from-ubuntu).
 
 ### Starting from OS X
 
-From the [Ubuntu Desktop download page](http://www.ubuntu.com/download/desktop/), download 15.04 LTS **64-bit**. Download the *normal* 64-bit ISO. Do **NOT** download the "64-bit Mac (AMD)" version.
+From the [Ubuntu Desktop download page](http://www.ubuntu.com/download/desktop/), download 15.10 LTS **64-bit**. Download the *normal* 64-bit ISO. Do **NOT** download the "64-bit Mac (AMD)" version.
 
 Now we'll convert the `.iso` to the kind of `.img` file that Macs need to boot from.
 
 `cd` to the directory where the `.iso` file lives, then run:
 
 ```bash
-hdiutil convert -format UDRW -o ubuntu-15.04-desktop-amd64.img ubuntu-14.04-desktop-amd64.iso
+hdiutil convert -format UDRW -o ubuntu-15.10-desktop-amd64.img ubuntu-15.10-desktop-amd64.iso
 ```
 
 OS X will actually output a `.img` with a `.dmg` extension added, so remove it:
 
 ```bash
-mv ubuntu-15.04-desktop-amd64.img.dmg ubuntu-15.04-desktop-amd64.img
+mv ubuntu-15.10-desktop-amd64.img.dmg ubuntu-15.10-desktop-amd64.img
 ```
 
 Insert the flash drive. Then find the identifier of the flash drive (e.g. `/dev/disk2`), by running:
@@ -47,7 +46,7 @@ diskutil unmountDisk /dev/diskN
 Then flash the `.img` to the drive. Use your disk identifier from above, but note the extra `r` that gets put in the middle.
 
 ```bash
-sudo dd if=ubuntu-15.04-desktop-amd64.img of=/dev/rdiskN bs=1m
+sudo dd if=ubuntu-15.10-desktop-amd64.img of=/dev/rdiskN bs=1m
 ```
 
 Eject the drive:
@@ -60,14 +59,14 @@ Then actually remove the drive.
 
 ### Starting from Ubuntu
 
-From the [Ubuntu Desktop download page](http://www.ubuntu.com/download/desktop/), download 15.04 LTS **64-bit**. Download the *normal* 64-bit ISO. Do **NOT** download the "64-bit Mac (AMD)" version.
+From the [Ubuntu Desktop download page](http://www.ubuntu.com/download/desktop/), download 15.10 LTS **64-bit**. Download the *normal* 64-bit ISO. Do **NOT** download the "64-bit Mac (AMD)" version.
 
 Figure out the correct device identifier for the USB drive. It may be `/dev/sdc`, or `/dev/sdd`, etc. If you already run Ubuntu, I'm trusting you to figure out how to identify the USB stick's identifier.
 
 Create a USB stick by running the following command, replacing `/dev/sdX` with the device identifier you found:
 
 ```bash
-sudo dd if=ubuntu-15.04-desktop-amd64.iso of=/dev/sdX
+sudo dd if=ubuntu-15.10-desktop-amd64.iso of=/dev/sdX
 ```
 
 ### Booting Ubuntu from USB
@@ -84,17 +83,15 @@ Select the USB icon to enter into the Ubuntu GRUB selector. Pick **"Try Ubuntu w
 
 Once inside the flash-booted Ubuntu, you may notice that the screen is not well-scaled for the high-density screen. You can fix that if you want by [following the instructions below](#high-density-display), but you'll have to do it again after install anyway.
 
-You will need to install wireless drivers from the network. This means you will need a **wired connection**. This could be Ethernet (using an adapter), or it could be over USB tethering (many Android phones, such as the Nexus 5, support this out-of-the-box).
-
-Install drivers with:
+Wireless drivers ship with the boot image, but aren't installed by default. Install them with:
 
 ```bash
 sudo apt-get install bcmwl-kernel-source
 ```
 
-The wireless should start working right away. If tethering, you may wish to disconnect the tethered device.
+The wireless should start working right away.
 
-Start the installer from the "Install Ubuntu" desktop launcher. When asked how to install Ubuntu on the hard drive, elect to erase all operating systems and install Ubuntu 15.04.
+Start the installer from the "Install Ubuntu" desktop launcher. When asked how to install Ubuntu on the hard drive, elect to erase all operating systems and install Ubuntu.
 
 When installing Ubuntu, pick the option to encrypt your hard drive during install. This will auto-select an option about LVM as well, which is fine.
 
@@ -104,10 +101,24 @@ During installation, select the option to wipe the entire drive, even unused blo
 
 #### Fix the wireless
 
-Install those wireless drivers again:
+The wireless drivers ship with the boot image, but aren't _installed_ by the boot image, so you need to either get a USB network connection to your laptop to install them, or you need to manually download and install 2 `.deb` files to proceed.
+
+If you have a USB tethered network connection, use it and install those wireless drivers again:
 
 ```bash
 sudo apt-get install bcmwl-kernel-source
+```
+
+If you don't have a tethered network connection, download these two files from some other computer:
+
+* [`dkms` for Ubuntu 15.10](http://packages.ubuntu.com/wily/all/dkms/download)
+* [`bcmwl-kernel-source` for Ubuntu 15.10](http://packages.ubuntu.com/wily/amd64/bcmwl-kernel-source/download)
+
+Transfer the two `.deb` files via USB to your Macbook, then install them with `dpkg`:
+
+```
+sudo dpkg -i dkms_2.2.0.3-2ubuntu6_all.deb
+sudo dpkg -i bcmwl-kernel-source_6.30.223.248+bdcom-0ubuntu7_amd64.deb
 ```
 
 #### GRUB maintenance
@@ -236,6 +247,12 @@ Whose body is the following one line:
 
 ```
 options hid-apple fnmode=2
+```
+
+Then update the boot image:
+
+```
+sudo update-initramfs -u -k all
 ```
 
 The next time you boot up, the behavior will be flipped, and you will need to hold down Fn to turn brightness up and down.
