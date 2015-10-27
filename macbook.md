@@ -13,7 +13,7 @@ You will need:
 
 You can create the Ubuntu boot USB stick [from OS X](#starting-from-os-x), or you can do it [from Ubuntu](#starting-from-ubuntu).
 
-### Starting from OS X
+### If You're Starting from OS X
 
 From the [Ubuntu Desktop download page](http://www.ubuntu.com/download/desktop/), download 15.10 LTS **64-bit**. Download the *normal* 64-bit ISO. Do **NOT** download the "64-bit Mac (AMD)" version.
 
@@ -57,7 +57,7 @@ diskutil eject /dev/diskN
 
 Then actually remove the drive.
 
-### Starting from Ubuntu
+### If You're Starting from Ubuntu
 
 From the [Ubuntu Desktop download page](http://www.ubuntu.com/download/desktop/), download 15.10 LTS **64-bit**. Download the *normal* 64-bit ISO. Do **NOT** download the "64-bit Mac (AMD)" version.
 
