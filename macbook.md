@@ -195,44 +195,6 @@ Section "InputClass"
 EndSection
 ```
 
-#### Switching Alt and Cmd
-
-If you're like me, you want the left-hand modifiers to go `Ctrl`/`Super`/`Alt`, and not `Ctrl`/`Alt`/`Super`, the way Mac keyboards default to.
-
-To do that, make a file at `~/.xmodmap` that contains the following:
-
-```
-clear control
-clear mod4
-clear mod1
-
-keycode 64 = Super_L
-keycode 133 = Alt_L Meta_L
-
-keycode 134 = Alt_R Meta_R
-keycode 108 = Control_R
-
-add mod4 = Super_L
-add mod1 = Alt_L Meta_L
-add mod1 = Alt_R Meta_R
-add control = Control_L
-add control = Control_R
-```
-
-You can test this out immediately by running `xmodmap ~/.xmodmap`, but this will only make it last until the next time you reboot.
-
-To enable it every time you boot, create a file at `~/.config/autostart/switch_keys.desktop` with the following:
-
-```
-[Desktop Entry]
-Name=Set Keyboard
-Exec=xmodmap /path/to/.xmodmap
-Terminal=false
-Type=Application
-```
-
-**Note:** Change `/path/to/.xmodmap` above to the actual absolute path to your `.xmodmap` file. You can't use `$HOME`.
-
 ### Making Function keys work without Fn
 
 By default, the Function keys (F1, F2, etc.) will do things like turn brightness up and down, and if you want to actually input F1 or F2, you need to hold down the Fn key. This applies to all 12 Function keys.
