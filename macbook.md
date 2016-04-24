@@ -111,34 +111,14 @@ sudo apt-get install bcmwl-kernel-source
 
 If you don't have a tethered network connection, download these two files from some other computer:
 
-* [`dkms` for Ubuntu 15.10](http://packages.ubuntu.com/wily/all/dkms/download)
-* [`bcmwl-kernel-source` for Ubuntu 15.10](http://packages.ubuntu.com/wily/amd64/bcmwl-kernel-source/download)
+* [`dkms` for Ubuntu 15.10](http://packages.ubuntu.com/xenial/all/dkms/download)
+* [`bcmwl-kernel-source` for Ubuntu 15.10](http://packages.ubuntu.com/xenial/amd64/bcmwl-kernel-source/download)
 
 Transfer the two `.deb` files via USB to your Macbook, then install them with `dpkg`:
 
 ```
 sudo dpkg -i dkms_2.2.0.3-2ubuntu6_all.deb
-sudo dpkg -i bcmwl-kernel-source_6.30.223.248+bdcom-0ubuntu7_amd64.deb
-```
-
-#### GRUB maintenance
-
-This GRUB change fixes a reported occasional SSD freeze bug. (I've never seen it, but I'm following orders out of an abundance of caution.)
-
-```bash
-sudo nano /etc/default/grub
-```
-
-Change the `GRUB_CMDLINE_LINUX=""` line to read:
-
-```
-GRUB_CMDLINE_LINUX="libata.force=noncq"
-```
-
-Finally, save and update GRUB to make those two changes take effect:
-
-```bash
-sudo update-grub
+sudo dpkg -i bcmwl-kernel-source_6.30.223.248+bdcom-0ubuntu8_amd64.deb
 ```
 
 #### High density display
@@ -146,54 +126,6 @@ sudo update-grub
 You'll notice that the retina display makes everything tiny. Fix this by going to your `System Settings`, then to `Displays`. Change the "Scale for menu and title bars" from `1` to `1.75`.
 
 ![scaling display](images/scale.png)
-
-##### Firefox
-
-You'll still need to go to `about:config` in Firefox and change the `layout.css.devPixelsPerPx` value to `1.75`.
-
-#### Adjusting the trackpad
-
-To make the trackpad a little smoother and more like OS X (and less likely to pick up on palms and thumbs), switch out the `synaptics` driver for the `mtrack` driver and put in a profile that should be pretty close to OS X.
-
-Swap out the driver:
-
-```
-gsettings set org.gnome.settings-daemon.plugins.mouse active false
-sudo apt-get install xserver-xorg-input-mtrack
-sudo apt-get autoremove xserver-xorg-input-synaptics
-```
-
-Then edit `/usr/share/X11/xorg.conf.d/50-mtrack.conf` and replace its contents with this:
-
-```
-Section "InputClass"
- MatchIsTouchpad "on"
- Identifier "Touchpads"
- Driver "mtrack"
- Option "IgnoreThumb" "true"
- Option "ThumbSize" "50"
- Option "IgnorePalm" "true"
- Option "DisableOnPalm" "false"
- Option "BottomEdge" "30"
- Option "TapDragEnable" "true"
- Option "Sensitivity" "0.5"
- Option "FingerHigh" "3"
- Option "FingerLow" "2"
- Option "ButtonEnable" "true"
- Option "ButtonIntegrated" "true"
- Option "ButtonTouchExpire" "750"
- Option "ClickFinger1" "1"
- Option "ClickFinger2" "3"
- Option "TapButton1" "1"
- Option "TapButton2" "3"
- Option "TapButton3" "2"
- Option "TapButton4" "0"
- Option "TapDragWait" "100"
- Option "ScrollLeftButton" "7"
- Option "ScrollRightButton" "6"
- Option "ScrollDistance" "100"
-EndSection
-```
 
 ### Making Function keys work without Fn
 
