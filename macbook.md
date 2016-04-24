@@ -15,20 +15,20 @@ You can create the Ubuntu boot USB stick [from OS X](#starting-from-os-x), or yo
 
 ### If You're Starting from OS X
 
-From the [Ubuntu Desktop download page](http://www.ubuntu.com/download/desktop/), download 15.10 LTS **64-bit**. Download the *normal* 64-bit ISO. Do **NOT** download the "64-bit Mac (AMD)" version.
+From the [Ubuntu Desktop download page](http://www.ubuntu.com/download/desktop/), download 16.04 **64-bit**. Download the *normal* 64-bit ISO. Do **NOT** download the "64-bit Mac (AMD)" version.
 
 Now we'll convert the `.iso` to the kind of `.img` file that Macs need to boot from.
 
 `cd` to the directory where the `.iso` file lives, then run:
 
 ```bash
-hdiutil convert -format UDRW -o ubuntu-15.10-desktop-amd64.img ubuntu-15.10-desktop-amd64.iso
+hdiutil convert -format UDRW -o ubuntu-16.04-desktop-amd64.img ubuntu-16.04-desktop-amd64.iso
 ```
 
 OS X will actually output a `.img` with a `.dmg` extension added, so remove it:
 
 ```bash
-mv ubuntu-15.10-desktop-amd64.img.dmg ubuntu-15.10-desktop-amd64.img
+mv ubuntu-16.04-desktop-amd64.img.dmg ubuntu-16.04-desktop-amd64.img
 ```
 
 Insert the flash drive. Then find the identifier of the flash drive (e.g. `/dev/disk2`), by running:
@@ -46,7 +46,7 @@ diskutil unmountDisk /dev/diskN
 Then flash the `.img` to the drive. Use your disk identifier from above, but note the extra `r` that gets put in the middle.
 
 ```bash
-sudo dd if=ubuntu-15.10-desktop-amd64.img of=/dev/rdiskN bs=1m
+sudo dd if=ubuntu-16.04-desktop-amd64.img of=/dev/rdiskN bs=1m
 ```
 
 Eject the drive:
@@ -59,14 +59,14 @@ Then actually remove the drive.
 
 ### If You're Starting from Ubuntu
 
-From the [Ubuntu Desktop download page](http://www.ubuntu.com/download/desktop/), download 15.10 LTS **64-bit**. Download the *normal* 64-bit ISO. Do **NOT** download the "64-bit Mac (AMD)" version.
+From the [Ubuntu Desktop download page](http://www.ubuntu.com/download/desktop/), download 16.04 **64-bit**. Download the *normal* 64-bit ISO. Do **NOT** download the "64-bit Mac (AMD)" version.
 
 Figure out the correct device identifier for the USB drive. It may be `/dev/sdc`, or `/dev/sdd`, etc. If you already run Ubuntu, I'm trusting you to figure out how to identify the USB stick's identifier.
 
 Create a USB stick by running the following command, replacing `/dev/sdX` with the device identifier you found:
 
 ```bash
-sudo dd if=ubuntu-15.10-desktop-amd64.iso of=/dev/sdX
+sudo dd if=ubuntu-16.04-desktop-amd64.iso of=/dev/sdX
 ```
 
 ### Booting Ubuntu from USB
