@@ -15,20 +15,20 @@ You can create the Ubuntu boot USB stick [from OS X](#starting-from-os-x), or yo
 
 ### If You're Starting from OS X
 
-From the [Ubuntu Desktop download page](http://www.ubuntu.com/download/desktop/), download 15.10 LTS **64-bit**. Download the *normal* 64-bit ISO. Do **NOT** download the "64-bit Mac (AMD)" version.
+From the [Ubuntu Desktop download page](http://www.ubuntu.com/download/desktop/), download 16.04 **64-bit**. Download the *normal* 64-bit ISO. Do **NOT** download the "64-bit Mac (AMD)" version.
 
 Now we'll convert the `.iso` to the kind of `.img` file that Macs need to boot from.
 
 `cd` to the directory where the `.iso` file lives, then run:
 
 ```bash
-hdiutil convert -format UDRW -o ubuntu-15.10-desktop-amd64.img ubuntu-15.10-desktop-amd64.iso
+hdiutil convert -format UDRW -o ubuntu-16.04-desktop-amd64.img ubuntu-16.04-desktop-amd64.iso
 ```
 
 OS X will actually output a `.img` with a `.dmg` extension added, so remove it:
 
 ```bash
-mv ubuntu-15.10-desktop-amd64.img.dmg ubuntu-15.10-desktop-amd64.img
+mv ubuntu-16.04-desktop-amd64.img.dmg ubuntu-16.04-desktop-amd64.img
 ```
 
 Insert the flash drive. Then find the identifier of the flash drive (e.g. `/dev/disk2`), by running:
@@ -46,7 +46,7 @@ diskutil unmountDisk /dev/diskN
 Then flash the `.img` to the drive. Use your disk identifier from above, but note the extra `r` that gets put in the middle.
 
 ```bash
-sudo dd if=ubuntu-15.10-desktop-amd64.img of=/dev/rdiskN bs=1m
+sudo dd if=ubuntu-16.04-desktop-amd64.img of=/dev/rdiskN bs=1m
 ```
 
 Eject the drive:
@@ -59,14 +59,14 @@ Then actually remove the drive.
 
 ### If You're Starting from Ubuntu
 
-From the [Ubuntu Desktop download page](http://www.ubuntu.com/download/desktop/), download 15.10 LTS **64-bit**. Download the *normal* 64-bit ISO. Do **NOT** download the "64-bit Mac (AMD)" version.
+From the [Ubuntu Desktop download page](http://www.ubuntu.com/download/desktop/), download 16.04 **64-bit**. Download the *normal* 64-bit ISO. Do **NOT** download the "64-bit Mac (AMD)" version.
 
 Figure out the correct device identifier for the USB drive. It may be `/dev/sdc`, or `/dev/sdd`, etc. If you already run Ubuntu, I'm trusting you to figure out how to identify the USB stick's identifier.
 
 Create a USB stick by running the following command, replacing `/dev/sdX` with the device identifier you found:
 
 ```bash
-sudo dd if=ubuntu-15.10-desktop-amd64.iso of=/dev/sdX
+sudo dd if=ubuntu-16.04-desktop-amd64.iso of=/dev/sdX
 ```
 
 ### Booting Ubuntu from USB
@@ -111,34 +111,14 @@ sudo apt-get install bcmwl-kernel-source
 
 If you don't have a tethered network connection, download these two files from some other computer:
 
-* [`dkms` for Ubuntu 15.10](http://packages.ubuntu.com/wily/all/dkms/download)
-* [`bcmwl-kernel-source` for Ubuntu 15.10](http://packages.ubuntu.com/wily/amd64/bcmwl-kernel-source/download)
+* [`dkms` for Ubuntu 15.10](http://packages.ubuntu.com/xenial/all/dkms/download)
+* [`bcmwl-kernel-source` for Ubuntu 15.10](http://packages.ubuntu.com/xenial/amd64/bcmwl-kernel-source/download)
 
 Transfer the two `.deb` files via USB to your Macbook, then install them with `dpkg`:
 
 ```
 sudo dpkg -i dkms_2.2.0.3-2ubuntu6_all.deb
-sudo dpkg -i bcmwl-kernel-source_6.30.223.248+bdcom-0ubuntu7_amd64.deb
-```
-
-#### GRUB maintenance
-
-This GRUB change fixes a reported occasional SSD freeze bug. (I've never seen it, but I'm following orders out of an abundance of caution.)
-
-```bash
-sudo nano /etc/default/grub
-```
-
-Change the `GRUB_CMDLINE_LINUX=""` line to read:
-
-```
-GRUB_CMDLINE_LINUX="libata.force=noncq"
-```
-
-Finally, save and update GRUB to make those two changes take effect:
-
-```bash
-sudo update-grub
+sudo dpkg -i bcmwl-kernel-source_6.30.223.248+bdcom-0ubuntu8_amd64.deb
 ```
 
 #### High density display
@@ -146,54 +126,6 @@ sudo update-grub
 You'll notice that the retina display makes everything tiny. Fix this by going to your `System Settings`, then to `Displays`. Change the "Scale for menu and title bars" from `1` to `1.75`.
 
 ![scaling display](images/scale.png)
-
-##### Firefox
-
-You'll still need to go to `about:config` in Firefox and change the `layout.css.devPixelsPerPx` value to `1.75`.
-
-#### Adjusting the trackpad
-
-To make the trackpad a little smoother and more like OS X (and less likely to pick up on palms and thumbs), switch out the `synaptics` driver for the `mtrack` driver and put in a profile that should be pretty close to OS X.
-
-Swap out the driver:
-
-```
-gsettings set org.gnome.settings-daemon.plugins.mouse active false
-sudo apt-get install xserver-xorg-input-mtrack
-sudo apt-get autoremove xserver-xorg-input-synaptics
-```
-
-Then edit `/usr/share/X11/xorg.conf.d/50-mtrack.conf` and replace its contents with this:
-
-```
-Section "InputClass"
- MatchIsTouchpad "on"
- Identifier "Touchpads"
- Driver "mtrack"
- Option "IgnoreThumb" "true"
- Option "ThumbSize" "50"
- Option "IgnorePalm" "true"
- Option "DisableOnPalm" "false"
- Option "BottomEdge" "30"
- Option "TapDragEnable" "true"
- Option "Sensitivity" "0.5"
- Option "FingerHigh" "3"
- Option "FingerLow" "2"
- Option "ButtonEnable" "true"
- Option "ButtonIntegrated" "true"
- Option "ButtonTouchExpire" "750"
- Option "ClickFinger1" "1"
- Option "ClickFinger2" "3"
- Option "TapButton1" "1"
- Option "TapButton2" "3"
- Option "TapButton3" "2"
- Option "TapButton4" "0"
- Option "TapDragWait" "100"
- Option "ScrollLeftButton" "7"
- Option "ScrollRightButton" "6"
- Option "ScrollDistance" "100"
-EndSection
-```
 
 ### Making Function keys work without Fn
 
