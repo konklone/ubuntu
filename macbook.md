@@ -1,4 +1,4 @@
-## Installing Ubuntu 15.10 on a MacBook Pro (11,1)
+## Installing Ubuntu 16.04 on a MacBook Pro (11,1)
 
 This tutorial will create a **fully disk encrypted** Macbook running **only Ubuntu**. This will **completely remove your OS X partition**.
 
@@ -111,8 +111,8 @@ sudo apt-get install bcmwl-kernel-source
 
 If you don't have a tethered network connection, download these two files from some other computer:
 
-* [`dkms` for Ubuntu 15.10](http://packages.ubuntu.com/xenial/all/dkms/download)
-* [`bcmwl-kernel-source` for Ubuntu 15.10](http://packages.ubuntu.com/xenial/amd64/bcmwl-kernel-source/download)
+* [`dkms` for Ubuntu 16.04](http://packages.ubuntu.com/xenial/all/dkms/download)
+* [`bcmwl-kernel-source` for Ubuntu 16.04](http://packages.ubuntu.com/xenial/amd64/bcmwl-kernel-source/download)
 
 Transfer the two `.deb` files via USB to your Macbook, then install them with `dpkg`:
 
